@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حرف وتحدي</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* تصميم شاشة القفل */
+        #lock-screen {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        #lock-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #code-input {
+            width: 80%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        #verify-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 85%;
+            transition: 0.3s;
+        }
+        #verify-btn:hover {
+            background-color: #45a049;
+        }
+        #error-msg {
+            color: #d9534f;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        /* شاشة اللعبة الأساسية (مخفية مبدئياً) */
+        #game-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <h2>🔒 أدخل كود التفعيل</h2>
+        <p>الرجاء إدخال الكود الذي استلمته بعد الشراء للبدء باللعب</p>
+        <input type="text" id="code-input" placeholder="مثال: HRF-101">
+        <br>
+        <button id="verify-btn" onclick="checkActivationCode()">تأكيد الكود</button>
+        <div id="error-msg">الكود غير صالح أو مستخدم مسبقاً.</div>
+    </div>
+
+    <div id="game-content">
+        <h1>لعبة حرف وتحدي شغالة الآن!</h1>
+        <p>هنا ستكون أسئلة اللعبة ووضع اللاعبين...</p>
+    </div>
+
+    <script>
+        // قائمة الـ 10 أكواد الثابتة للبيع
+        const validCodes = [
+            "HRF-101", "HRF-202", "HRF-303", "HRF-404", "HRF-505",
+            "HRF-606", "HRF-707", "HRF-808", "HRF-909", "HRF-999"
+        ];
+
+        // التحقق التلقائي عند فتح الصفحة إذا كان اللاعب مفعلها من قبل
+        window.onload = function() {
+            if (localStorage.getItem("gameUnlocked") === "true") {
+                showGame();
+            }
+        };
+
+        function checkActivationCode() {
+            const enteredCode = document.getElementById("code-input").value.trim();
+            const errorMsg = document.getElementById("error-msg");
+
+            // مقارنة الكود المدخل مع القائمة
+            if (validCodes.includes(enteredCode)) {
+                // حفظ أن اللعبة فُتحت في جهاز هذا المستخدم
+                localStorage.setItem("gameUnlocked", "true");
+                showGame();
+            } else {
+                // إظهار رسالة الخطأ
+                errorMsg.style.display = "block";
+            }
+        }
+
+        function showGame() {
+            document.getElementById("lock-screen").style.display = "none";
+            document.getElementById("game-content").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
